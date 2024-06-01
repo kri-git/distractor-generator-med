@@ -4,8 +4,8 @@ from bert_ranking import rank_distractors_bert
 
 
 # Sample question and answer
-question = "Urinary metabolite of progesterone"
-answer = "Pregnanediol"
+question = "Most potent mineralocoicoid is"
+answer = "Aldosterone"
 
 # Extract keywords from the question
 keywords = get_key_terms(question)

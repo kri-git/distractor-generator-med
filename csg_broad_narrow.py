@@ -64,7 +64,7 @@ def get_related_entities(keywords, api_key):
         params = {
             'apiKey': api_key,
             'includeRelationLabels': 'CHD',
-            'sabs': 'SNMI,RCD'
+            'sabs': 'MTH,RCD,SNMI'
         }
         response = requests.get(f"{content_url}/CUI/{cui}/relations", params=params).json()
         parent_concepts = []
@@ -78,13 +78,23 @@ def get_related_entities(keywords, api_key):
         params = {
             'apiKey': api_key,
             'includeRelationLabels': 'PAR',
-            'sabs': 'SNMI,RCD'
+            'sabs': 'SNMI,RCD',
+            'pageNumber': 1
         }
-        response = requests.get(f"{content_url}/CUI/{cui}/relations", params=params).json()
         child_concepts = []
-        for result in response.get('result', []):
-            if result['relationLabel'] == 'PAR':
-                child_concepts.append(result['relatedIdName'])
+    
+        while True:
+            response = requests.get(f"{content_url}/CUI/{cui}/relations", params=params).json()
+            for result in response.get('result', []):
+                if result['relationLabel'] == 'PAR':
+                    child_concepts.append(result['relatedIdName'])
+            
+            # Check if there are more pages
+            if params['pageNumber'] >= response.get('pageCount', 0):
+                break  # Exit the loop if we've processed all pages
+            
+            params['pageNumber'] += 1  # Move to the next page
+    
         return child_concepts
     
     related_entities = set()
