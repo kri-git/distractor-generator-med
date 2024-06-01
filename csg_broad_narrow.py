@@ -78,7 +78,7 @@ def get_related_entities(keywords, api_key):
         params = {
             'apiKey': api_key,
             'includeRelationLabels': 'PAR',
-            'sabs': 'SNMI,RCD',
+            'sabs': 'SNMI,RCD,MTH',
             'pageNumber': 1
         }
         child_concepts = []
