@@ -4,8 +4,8 @@ from bert_ranking import rank_distractors_bert
 
 
 # Sample question and answer
-question = "Most potent mineralocoicoid is"
-answer = "Aldosterone"
+question = "Glucagon acts on muscle to cause"
+answer = "Gluconeogenesis"
 
 # Extract keywords from the question
 keywords = get_key_terms(question)

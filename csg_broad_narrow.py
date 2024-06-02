@@ -63,13 +63,13 @@ def get_related_entities(keywords, api_key):
     def get_parent_concepts(cui):
         params = {
             'apiKey': api_key,
-            'includeRelationLabels': 'CHD',
-            'sabs': 'MTH,RCD,SNMI'
+            'includeRelationLabels': 'CHD,RN',
+            'sabs': 'MTH,MSH,RCD,SNMI,'
         }
         response = requests.get(f"{content_url}/CUI/{cui}/relations", params=params).json()
         parent_concepts = []
         for result in response.get('result', []):
-            if result['relationLabel'] == 'CHD':
+            if result['relationLabel'] == 'CHD' or result['relationLabel'] == 'RN':
                 parent_concepts.append(result['relatedIdName'])
         return parent_concepts
     
@@ -77,8 +77,8 @@ def get_related_entities(keywords, api_key):
     def get_child_concepts(cui):
         params = {
             'apiKey': api_key,
-            'includeRelationLabels': 'PAR',
-            'sabs': 'SNMI,RCD,MTH',
+            'includeRelationLabels': 'PAR,RB',
+            'sabs': 'MTH,MSH,SNMI,RCD',
             'pageNumber': 1
         }
         child_concepts = []
@@ -86,7 +86,7 @@ def get_related_entities(keywords, api_key):
         while True:
             response = requests.get(f"{content_url}/CUI/{cui}/relations", params=params).json()
             for result in response.get('result', []):
-                if result['relationLabel'] == 'PAR':
+                if result['relationLabel'] == 'PAR' or result['relationLabel'] == 'RB':
                     child_concepts.append(result['relatedIdName'])
             
             # Check if there are more pages
